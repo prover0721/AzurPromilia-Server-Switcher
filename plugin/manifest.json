@@ -1,0 +1,39 @@
+{
+  "id": "azur_promilia",
+  "name": "蓝色星原：旅谣",
+  "icon": "GAME",
+  "env": "PC 本地",
+  "description": "全服资源共享与一键换服启动器（支持官服 / B服 / 日服 / 韩服 / 台服 / 国际服）",
+  "tasks": [
+    {
+      "id": "open_switcher_gui",
+      "name": "打开可视化换服器界面",
+      "desc": "启动独立的《蓝色星原》全服资源共享与切换器窗口",
+      "enabled": true
+    },
+    {
+      "id": "scan_installations",
+      "name": "扫描本机游戏目录与区服状态",
+      "desc": "自动定位安装路径、识别当前区服与资源体积",
+      "enabled": true
+    },
+    {
+      "id": "switch_official_launch",
+      "name": "切换至官服并启动",
+      "desc": "热切换为官服渠道配置与登录组件并直接启动游戏",
+      "enabled": true
+    },
+    {
+      "id": "switch_bilibili_launch",
+      "name": "切换至 B 服并启动",
+      "desc": "热切换为 B 站渠道配置与登录组件并直接启动游戏",
+      "enabled": true
+    },
+    {
+      "id": "audit_hardlinks",
+      "name": "硬链接共享池体检",
+      "desc": "统计跨服硬链接文件数与节省的物理磁盘空间",
+      "enabled": true
+    }
+  ]
+}

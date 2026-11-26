@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+
+# Local user configs, backups & logs (never commit personal data or game binaries)
+config.json
+data/
+backups/
+profiles/
+logs/
+*.log
+*.zip
+
+# Large third-party SDK binaries (>100MB libcef.dll exceeds GitHub limit; distribute via Releases or extract locally)
+assets/cn_sources/
+
+# IDE
+.vscode/
+.idea/
