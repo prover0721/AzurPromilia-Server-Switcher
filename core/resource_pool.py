@@ -157,6 +157,12 @@ def extract_channel_source(
     if not app_cfg.is_file() or not sdk_dir.is_dir():
         raise FileNotFoundError(f"未在 {game_root} 中找到完整的 mj_sdk 渠道文件")
 
+    has_bl = (sdk_dir / "BLPlatform64").is_dir()
+    if server_id == "bilibili" and not has_bl:
+        raise ValueError("当前目录缺少 BLPlatform64，不是完整的 B 服客户端，无法提取为 B 服源。")
+    if server_id == "official" and has_bl:
+        raise ValueError("当前目录仍包含 BLPlatform64，不是纯净官服客户端，无法提取为官服源。")
+
     dest = sources_dir / server_id
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copy2(app_cfg, dest / "app_config.dat")

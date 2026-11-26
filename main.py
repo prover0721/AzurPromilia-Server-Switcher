@@ -59,8 +59,7 @@ def _run_cli(args: argparse.Namespace) -> int:
             return 1
 
         if target in ("official", "bilibili"):
-            if cn_inst.detected_server != target:
-                switch_cn_channel(Path(cn_inst.game_root), cn_inst.detected_server, target, log=print)
+            switch_cn_channel(Path(cn_inst.game_root), cn_inst.detected_server, target, log=print)
             launch_root = Path(cn_inst.game_root)
         else:
             shell = cfg.server_game_roots.get(target, "")

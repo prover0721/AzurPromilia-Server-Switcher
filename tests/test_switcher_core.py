@@ -72,6 +72,11 @@ class TestSwitcherCore(unittest.TestCase):
             extract_channel_source(bili_root, "bilibili", sources_dir=sources)
             extract_channel_source(offi_root, "official", sources_dir=sources)
 
+            with self.assertRaises(ValueError):
+                extract_channel_source(bili_root, "official", sources_dir=sources)
+            with self.assertRaises(ValueError):
+                extract_channel_source(offi_root, "bilibili", sources_dir=sources)
+
             switch_cn_channel(bili_root, "bilibili", "official", sources_dir=sources, backups_dir=backups)
             self.assertEqual(detect_server_from_files(bili_root), "official")
             self.assertEqual((bili_root / "mj_sdk" / "res" / "app_config.dat").read_bytes(), b"OFFI")

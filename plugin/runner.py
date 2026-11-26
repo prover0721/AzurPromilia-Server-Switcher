@@ -60,13 +60,12 @@ def run_task(task_id: str, config: dict, log_func, is_stopped_func) -> bool:
             return False
         game_root = Path(cn_inst.game_root)
         try:
-            if cn_inst.detected_server != target:
-                switch_cn_channel(
-                    game_root,
-                    cn_inst.detected_server,
-                    target,
-                    log=lambda m: log_func(m, "info"),
-                )
+            switch_cn_channel(
+                game_root,
+                cn_inst.detected_server,
+                target,
+                log=lambda m: log_func(m, "info"),
+            )
             if config.get("auto_launch", True):
                 launch_game(game_root, sw_cfg.launch_options)
                 log_func(f"[▶] 已切换并启动 {target}", "success")
