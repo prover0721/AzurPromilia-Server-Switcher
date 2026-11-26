@@ -807,15 +807,12 @@ class SwitcherMainWindow(FluentWindow):
             try:
                 if target in ("official", "bilibili"):
                     game_root = Path(cn_inst.game_root)
-                    if cn_inst.detected_server != target:
-                        switch_cn_channel(
-                            game_root,
-                            cn_inst.detected_server,
-                            target,
-                            log=self.signals.log.emit,
-                        )
-                    else:
-                        self.signals.log.emit(f"[*] 当前已是 {SERVER_CATALOG[target]['short']}，无需切换配置")
+                    switch_cn_channel(
+                        game_root,
+                        cn_inst.detected_server,
+                        target,
+                        log=self.signals.log.emit,
+                    )
                 else:
                     shell_path = self.config.server_game_roots.get(target, "")
                     if not shell_path or not Path(shell_path).is_dir():

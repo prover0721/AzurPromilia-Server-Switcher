@@ -111,10 +111,42 @@ def _fast_dir_size(path: Path) -> int:
     return total
 
 
+def _read_app_config_bytes(game_root: Path) -> Optional[bytes]:
+    cfg = game_root / "mj_sdk" / "res" / "app_config.dat"
+    if cfg.is_file():
+        try:
+            return cfg.read_bytes()
+        except OSError:
+            return None
+    return None
+
+
 def detect_server_from_files(game_root: Path, install_root: Optional[Path] = None) -> str:
-    """Identify which server a game_root currently belongs to (SDK files take priority over folder name)."""
+    """Identify which server a game_root currently belongs to (verifying both app_config.dat and SDK)."""
     plugins_sdk = game_root / "AzurPromilia_Data" / "Plugins" / "mj_sdk"
-    if (plugins_sdk / "BLPlatform64").is_dir():
+    has_bl = (plugins_sdk / "BLPlatform64").is_dir()
+
+    from core.models import BUILTIN_CN_SOURCES_DIR, SOURCES_DIR
+
+    cur_cfg = _read_app_config_bytes(game_root)
+    if cur_cfg is not None:
+        for sid in ("official", "bilibili"):
+            for base in (SOURCES_DIR, BUILTIN_CN_SOURCES_DIR):
+                ref = base / sid / "app_config.dat"
+                if ref.is_file():
+                    try:
+                        if ref.read_bytes() == cur_cfg:
+                            if sid == "official" and has_bl:
+                                # Mismatched hybrid state (official app_config + BLPlatform64); do not report bilibili
+                                return "official"
+                            if sid == "bilibili" and has_bl:
+                                return "bilibili"
+                            if sid == "official" and not has_bl:
+                                return "official"
+                    except OSError:
+                        pass
+
+    if has_bl:
         return "bilibili"
 
     name_hint = f"{install_root.name if install_root else ''} {game_root.name}".lower()

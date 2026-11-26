@@ -48,6 +48,12 @@ class TestSwitcherCore(unittest.TestCase):
             self.assertEqual(detect_server_from_files(bili_root), "bilibili")
             # Folder named bilibili without BLPlatform64 must still detect as official
             self.assertEqual(detect_server_from_files(offi_root, offi_root.parent), "official")
+            # Hybrid state (official app_config.dat + BLPlatform64) must not falsely claim bilibili
+            (offi_root / "AzurPromilia_Data" / "Plugins" / "mj_sdk" / "BLPlatform64").mkdir(exist_ok=True)
+            (offi_root / "mj_sdk" / "res" / "app_config.dat").write_bytes(
+                (Path(__file__).resolve().parent.parent / "assets" / "cn_sources" / "official" / "app_config.dat").read_bytes()
+            )
+            self.assertEqual(detect_server_from_files(offi_root, offi_root.parent), "official")
 
             inst = inspect_installation(root / "bili", measure_size=True)
             self.assertIsNotNone(inst)
